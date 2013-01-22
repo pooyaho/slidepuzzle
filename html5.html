@@ -3,53 +3,12 @@
 <head>
     <meta charset="utf-8"/>
     <title></title>
-    <style>
-        div#header {
-            width: 100%;
-            background: green;
-        }
+    <link rel="stylesheet" href="css/style.css"/>
 
-        div#container {
-            width: 100%;
-            margin-bottom: 50px;
-            margin-top: 50px;
-            background: limegreen;
-            /*display: block;*/
-        }
-
-        div#footer {
-            width: 100%;
-            clear: both;
-            background: green;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-        }
-
-        div.center {
-            text-align: center;
-            width: 80%;
-            display: block;
-            margin-right: auto;
-            margin-left: auto;
-        }
-
-            /*button {*/
-            /*height: 150px;*/
-            /*width: 150px;*/
-            /*}*/
-
-        .hidden {
-            visibility: hidden;
-        }
-
-        .visible {
-            visibility: visible;
-        }
-    </style>
     <script src="js/jquery-1.8.3.js"></script>
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/tools.js"></script>
     <script>
 
         $(function () {
@@ -61,14 +20,7 @@
                     }
             )
         });
-        function isGameFinished() {
-            for (var i = 0; i < 8; i++) {
-                if (parseInt($("#" + i).attr("ind")) != i) {
-                    return false;
-                }
-            }
-            return true;
-        }
+
         function checkNeighbours(cId) {
             var id = parseInt(cId);
             var top = id - 3;
@@ -96,40 +48,23 @@
                 target = down;
 
             if (target != null) {
-//                $("#" + id).hide();
-//                $("#" + target).show();
-                $("#" + id).css("visibility", "hidden");
-                $("#" + target).css("visibility", "visible");
-                getCanvas(target).drawImage($("#" + id)[0], 0, 0);
-//                $("#" + target).css("background-image", $("#" + id).css("background-image"));
-                $("#" + target).attr("ind", $("#" + id).attr("ind"));
+                var src = $("#" + id);
+                var dest = $("#" + target);
+
+                src.css("visibility", "hidden");
+                dest.css("visibility", "visible");
+                getCanvas(target).drawImage(src[0], 0, 0);
+                dest.attr("ind", src.attr("ind"));
             }
 
         }
 
-        function getRandomArray() {
-            var arr = [];
-            while (arr.length < 8) {
-                var randomnumber = Math.floor((Math.random() * 8));
-                var found = false;
-                for (var i = 0; i < arr.length; i++) {
-                    if (arr[i] == randomnumber) {
-                        found = true;
-                        break
-                    }
-                }
-                if (!found)arr[arr.length] = randomnumber;
 
-            }
-            return arr;
-        }
-
-        var img=new Image();
+        var img = new Image();
 
         function changeImage() {
 
 
-//            var img = document.getElementById("kk");
             var karajan = getCanvas("karajan");
             karajan.clearRect(0, 0, karajan.width, karajan.height);
             karajan.drawImage(img, 0, 0, img.width, img.height, 0, 0, 450, 450);
@@ -138,8 +73,6 @@
 
             for (var i = 0; i < 3; i++) {
                 for (var j = 0; j < 3; j++) {
-//                    var dx = ((j == 0) ? 0 : j * 150 + j * 10);
-//                    var dy = ((i == 0) ? 0 : i * 150 + i * 10);
 
                     var k = i * 3 + j;
 
@@ -157,16 +90,8 @@
             if (event.target.files.length <= 0) return;
             var files = event.target.files;
             var URL = window.URL || window.webkitURL;
-//            var img = document.getElementById("kk");
-//            var img = document.getElementById("karajan");
-
             img.src = URL.createObjectURL(files[0]);
             img.onload = changeImage;
-//            img.reload();
-//            setTimeout(drawImage, 1000);
-//            canvas.width = "450";
-//            canvas.height = "450";
-
 
         }
 
@@ -258,13 +183,7 @@
         </div>
     </div>
 </div>
-<!--<section>-->
-<!--<canvas width="150" height="150">-->
-<!--Not supported-->
-<!--</canvas>-->
-<!--</section>-->
 <p>
-    <!--<button onclick="drawImage()">Shuffle</button>-->
     <input type="file" accept="image/*" id="image_input" onchange="drawImage(event)"/>
 </p>
 

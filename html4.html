@@ -7,79 +7,30 @@
     <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/tools.js"></script>
 
     <link rel="stylesheet" href="css/style.css"/>
-    <style>
-        div#header {
-            width: 100%;
-            background: green;
-        }
 
-        div#container {
-            width: 100%;
-            margin-bottom: 50px;
-            margin-top: 50px;
-            background: limegreen;
-            /*display: block;*/
-        }
-
-        div#footer {
-            width: 100%;
-            clear: both;
-            background: green;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-        }
-
-        div.center {
-            text-align: center;
-            width: 80%;
-            display: block;
-            margin-right: auto;
-            margin-left: auto;
-        }
-
-        button {
-            height: 150px;
-            width: 150px;
-        }
-
-        .hidden {
-            visibility: hidden;
-        }
-
-        .visible {
-            visibility: visible;
-        }
-    </style>
     <script>
 
         $(document).ready(function () {
-            var arr = [];
-            var time = 0;
-            while (arr.length < 8) {
-                var randomnumber = Math.floor((Math.random() * 8) + 1);
-                var found = false;
-                for (var i = 0; i < arr.length; i++) {
-                    if (arr[i] == randomnumber) {
-                        found = true;
-                        break
-                    }
-                }
-                if (!found)arr[arr.length] = randomnumber;
-
-            }
+            var arr = getRandomArray();
 
             for (var j = 0; j < 8; j++) {
-                $("#" + j).css("background-image", 'url(\"img/' + arr[j] + '.jpg\")');
-                $("#" + j).attr("ind", arr[j]);
+                var $btn = $("#" + j);
+                $btn.css("background-image", 'url(\"img/' + arr[j] + '.jpg\")');
+                $btn.attr("ind", arr[j]);
             }
             setInterval(function () {
                         $("#footer").text(time++);
                     }, 1000
             );
         });
+
+        $(function () {
+            $("button").addClass("button");
+        });
+
         $(function () {
             $("button")
                     .button()
@@ -87,17 +38,9 @@
                         checkNeighbours(this.id);
                         if (isGameFinished())
                             alert("game finished!");
-//                        alert(this.className);
                     });
         });
-        function isGameFinished() {
-            for (var i = 0; i < 8; i++) {
-                if (parseInt($("#" + i).attr("ind")) != i) {
-                    return false;
-                }
-            }
-            return true;
-        }
+
         function checkNeighbours(cId) {
             var id = parseInt(cId);
             var top = id - 3;
@@ -125,27 +68,16 @@
                 target = down;
 
             if (target != null) {
-//                $("#" + id).hide();
-//                $("#" + target).show();
-                $("#" + id).css("visibility", "hidden");
-                $("#" + target).css("visibility", "visible");
-                $("#" + target).css("background-image", $("#" + id).css("background-image"));
-                $("#" + target).attr("ind", $("#" + id).attr("ind"));
+                var $src = $("#" + id);
+                $src.css("visibility", "hidden");
+                var $dest = $("#" + target);
+                $dest.css("visibility", "visible");
+                $dest.css("background-image", $src.css("background-image"));
+                $dest.attr("ind", $src.attr("ind"));
             }
 
         }
-        $(function () {
 
-            function runEffect() {
-                $("#effect").hide(selectedEffect, options, 1000, callback);
-            }
-
-            function callback() {
-                setTimeout(function () {
-                    $("#effect").removeAttr("style").hide().fadeIn();
-                }, 1000);
-            }
-        });
     </script>
 </head>
 <body>
@@ -207,7 +139,7 @@
 <div id="container">
     <div class="center">
         <div>
-            <button id="0"></button>
+            <button id="0" ></button>
             <button id="1"></button>
             <button id="2"></button>
         </div>
@@ -225,27 +157,5 @@
 </div>
 <div id="footer">
 </div>
-<!--<div class="table-div">-->
-<!--<div class="row-div">-->
-<!--<div class="cell-div">-->
-<!--<button>Button</button>-->
-<!--</div>-->
-<!--<div class="spacer-cell-div">-->
-<!--&nbsp;-->
-<!--</div>-->
-<!--<div class="cell-div">-->
-<!--<button>Button</button>-->
-
-<!--</div>-->
-<!--<div class="spacer-cell-div">-->
-<!--&nbsp;-->
-<!--</div>-->
-<!--<div class="cell-div">-->
-<!--<button>Button</button>-->
-
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-
 </body>
 </html>

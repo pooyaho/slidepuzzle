@@ -1,7 +1,45 @@
-/*.center*/
-/*{*/
-    /*margin-left:auto;*/
-    /*margin-right:auto;*/
-    /*width:50%;*/
-    /*background-color:#b0e0e6;*/
+div#header {
+    width: 100%;
+    background: green;
+}
+
+div#container {
+    width: 100%;
+    margin-bottom: 50px;
+    margin-top: 50px;
+    background: limegreen;
+    /*display: block;*/
+}
+
+div#footer {
+    width: 100%;
+    clear: both;
+    background: green;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+div.center {
+    text-align: center;
+    width: 80%;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+/*button {*/
+/*height: 150px;*/
+/*width: 150px;*/
 /*}*/
+.button {
+    height: 150px;
+    width: 150px;
+}
+.hidden {
+    visibility: hidden;
+}
+
+.visible {
+    visibility: visible;
+}
