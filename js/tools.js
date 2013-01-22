@@ -22,3 +22,11 @@ function getRandomArray() {
     }
     return arr;
 }
+
+function getCanvas(id) {
+    var canvas = $("#" + id)[0];
+    if (canvas.getContext) {
+        return canvas.getContext("2d");
+    }
+    return undefined;
+}
