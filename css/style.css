@@ -1,13 +1,16 @@
+body{
+    background-color: #5ac6ff;
+}
 div#header {
     width: 100%;
-    background: green;
+    background: #8dd4ff;
 }
 
 div#container {
     width: 100%;
     margin-bottom: 50px;
     margin-top: 50px;
-    background: limegreen;
+    background: #8dd4ff;
     /*display: block;*/
 }
 
