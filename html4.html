@@ -1,8 +1,14 @@
-<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title></title>
+    <title>Karajan slide puzzle</title>
+    <link rel="stylesheet" href="css/jquery-ui.css"/>
+    <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script src="js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="css/style.css"/>
     <style>
         div#header {
             width: 100%;
@@ -34,10 +40,10 @@
             margin-left: auto;
         }
 
-            /*button {*/
-            /*height: 150px;*/
-            /*width: 150px;*/
-            /*}*/
+        button {
+            height: 150px;
+            width: 150px;
+        }
 
         .hidden {
             visibility: hidden;
@@ -47,19 +53,42 @@
             visibility: visible;
         }
     </style>
-    <script src="js/jquery-1.8.3.js"></script>
-    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <script src="js/bootstrap.min.js"></script>
     <script>
 
+        $(document).ready(function () {
+            var arr = [];
+            var time = 0;
+            while (arr.length < 8) {
+                var randomnumber = Math.floor((Math.random() * 8) + 1);
+                var found = false;
+                for (var i = 0; i < arr.length; i++) {
+                    if (arr[i] == randomnumber) {
+                        found = true;
+                        break
+                    }
+                }
+                if (!found)arr[arr.length] = randomnumber;
+
+            }
+
+            for (var j = 0; j < 8; j++) {
+                $("#" + j).css("background-image", 'url(\"img/' + arr[j] + '.jpg\")');
+                $("#" + j).attr("ind", arr[j]);
+            }
+            setInterval(function () {
+                        $("#footer").text(time++);
+                    }, 1000
+            );
+        });
         $(function () {
-            $("canvas").click(
-                    function (e) {
+            $("button")
+                    .button()
+                    .click(function (event) {
                         checkNeighbours(this.id);
                         if (isGameFinished())
                             alert("game finished!");
-                    }
-            )
+//                        alert(this.className);
+                    });
         });
         function isGameFinished() {
             for (var i = 0; i < 8; i++) {
@@ -100,84 +129,23 @@
 //                $("#" + target).show();
                 $("#" + id).css("visibility", "hidden");
                 $("#" + target).css("visibility", "visible");
-                getCanvas(target).drawImage($("#" + id)[0], 0, 0);
-//                $("#" + target).css("background-image", $("#" + id).css("background-image"));
+                $("#" + target).css("background-image", $("#" + id).css("background-image"));
                 $("#" + target).attr("ind", $("#" + id).attr("ind"));
             }
 
         }
+        $(function () {
 
-        function getRandomArray() {
-            var arr = [];
-            while (arr.length < 8) {
-                var randomnumber = Math.floor((Math.random() * 8));
-                var found = false;
-                for (var i = 0; i < arr.length; i++) {
-                    if (arr[i] == randomnumber) {
-                        found = true;
-                        break
-                    }
-                }
-                if (!found)arr[arr.length] = randomnumber;
-
+            function runEffect() {
+                $("#effect").hide(selectedEffect, options, 1000, callback);
             }
-            return arr;
-        }
 
-        var img=new Image();
-
-        function changeImage() {
-
-
-//            var img = document.getElementById("kk");
-            var karajan = getCanvas("karajan");
-            karajan.clearRect(0, 0, karajan.width, karajan.height);
-            karajan.drawImage(img, 0, 0, img.width, img.height, 0, 0, 450, 450);
-
-            var arr = getRandomArray();
-
-            for (var i = 0; i < 3; i++) {
-                for (var j = 0; j < 3; j++) {
-//                    var dx = ((j == 0) ? 0 : j * 150 + j * 10);
-//                    var dy = ((i == 0) ? 0 : i * 150 + i * 10);
-
-                    var k = i * 3 + j;
-
-                    if (k > 7) continue;
-
-                    getCanvas(arr[k]).drawImage($("#karajan")[0], j * 150, i * 150, 150, 150, 0, 0, 150, 150);
-                    $("#" + k).attr("ind", arr[k]);
-                }
+            function callback() {
+                setTimeout(function () {
+                    $("#effect").removeAttr("style").hide().fadeIn();
+                }, 1000);
             }
-        }
-
-        function drawImage(event) {
-
-//            alert("here");
-            if (event.target.files.length <= 0) return;
-            var files = event.target.files;
-            var URL = window.URL || window.webkitURL;
-//            var img = document.getElementById("kk");
-//            var img = document.getElementById("karajan");
-
-            img.src = URL.createObjectURL(files[0]);
-            img.onload = changeImage;
-//            img.reload();
-//            setTimeout(drawImage, 1000);
-//            canvas.width = "450";
-//            canvas.height = "450";
-
-
-        }
-
-        function getCanvas(id) {
-            var canvas = $("#" + id)[0];
-            if (canvas.getContext) {
-                return canvas.getContext("2d");
-            }
-            return undefined;
-        }
-
+        });
     </script>
 </head>
 <body>
@@ -237,36 +205,47 @@
     </div>
 </div>
 <div id="container">
-    <canvas id="karajan" height="452px" width="452px" style="display: none;"></canvas>
-    <!--<img src="img/k1.jpg" id="kk">-->
-
     <div class="center">
         <div>
-            <canvas width="150" height="150" id="0"></canvas>
-            <canvas width="150" height="150" id="1"></canvas>
-            <canvas width="150" height="150" id="2"></canvas>
+            <button id="0"></button>
+            <button id="1"></button>
+            <button id="2"></button>
         </div>
         <div>
-            <canvas width="150" height="150" id="3"></canvas>
-            <canvas width="150" height="150" id="4"></canvas>
-            <canvas width="150" height="150" id="5"></canvas>
+            <button id="3"></button>
+            <button id="4"></button>
+            <button id="5"></button>
         </div>
         <div>
-            <canvas width="150" height="150" id="6"></canvas>
-            <canvas width="150" height="150" id="7"></canvas>
-            <canvas width="150" height="150" id="8" style="visibility: hidden;"></canvas>
+            <button id="6"></button>
+            <button id="7"></button>
+            <button id="8" class="hidden"></button>
         </div>
     </div>
 </div>
-<!--<section>-->
-<!--<canvas width="150" height="150">-->
-<!--Not supported-->
-<!--</canvas>-->
-<!--</section>-->
-<p>
-    <button onclick="drawImage()">Shuffle</button>
-    <input type="file" accept="image/*" id="image_input" onchange="drawImage(event)"/>
-</p>
+<div id="footer">
+</div>
+<!--<div class="table-div">-->
+<!--<div class="row-div">-->
+<!--<div class="cell-div">-->
+<!--<button>Button</button>-->
+<!--</div>-->
+<!--<div class="spacer-cell-div">-->
+<!--&nbsp;-->
+<!--</div>-->
+<!--<div class="cell-div">-->
+<!--<button>Button</button>-->
+
+<!--</div>-->
+<!--<div class="spacer-cell-div">-->
+<!--&nbsp;-->
+<!--</div>-->
+<!--<div class="cell-div">-->
+<!--<button>Button</button>-->
+
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
 
 </body>
 </html>
